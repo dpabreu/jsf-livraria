@@ -56,9 +56,28 @@ public class LivroBean {
 			FacesContext.getCurrentInstance().addMessage("autor", new FacesMessage("Livro deve ter pelo menos um Autor."));
 		}
 
-		new DAO<Livro>(Livro.class).adiciona(this.livro);
+		if(this.livro.getId() == null){
+			new DAO<Livro>(Livro.class).adiciona(this.livro);
+		}else{
+			new DAO<Livro>(Livro.class).atualiza(this.livro);
+		}
 		
 		this.livro = new Livro();
+	}
+	
+	public void remover(Livro livro){
+		System.out.println("Removendo livro" + livro.getTitulo());
+		new DAO<Livro>(Livro.class).remove(livro);
+	}
+	
+	public void carregar(Livro livro){
+		System.out.println("Carregando livro" + livro.getTitulo());
+		this.livro = livro;
+		
+	}
+	
+	public void removerAutorDoLivro(Autor autor){
+		this.livro.removeAutor(autor);
 	}
 	
 	public void comecaComDigitoUm(FacesContext fc, UIComponent component, Object value){
