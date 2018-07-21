@@ -36,6 +36,15 @@ public class LivroBean {
 		return new DAO<Autor>(Autor.class).listaTodos();
 	}
 	
+	public void carregaPelaId(){
+		Integer id = this.livro.getId();
+		this.livro = new DAO<Livro>(Livro.class).buscaPorId(id);
+		
+		if(this.livro == null){
+			this.livro = new Livro();
+		}
+	}	
+	
 	public void gravarAutor(){
 		Autor autor = new DAO<Autor>(Autor.class).buscaPorId(this.autorID);
 		this.livro.adicionaAutor(autor);
