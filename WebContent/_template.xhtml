@@ -12,6 +12,11 @@
 			<h1>
 				<ui:insert name="titulo"/>
 			</h1>
+			
+			<h:form rendered="#{sessionScope['usuarioLogado'] != null}">
+				<h:commandLink value="Logout" action="#{loginBean.deslogar}"/>
+			</h:form>
+			
 			<h:outputText value="Usuario: #{sessionScope['usuarioLogado'].email}" />
 			<br/>
 		</div>
