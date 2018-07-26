@@ -9,10 +9,17 @@
 	<h:head/>
 	<h:body>
 		<div id="cabecalho">
-			<h:graphicImage library="img" name="logo.png"/>			
-			<h1>
-				<ui:insert name="titulo"/>
-			</h1>
+			<h:panelGrid columns="2">
+				<h:graphicImage library="img" name="logo.png"/>
+				
+				<h:form rendered="#{sessionScope['usuarioLogado'] != null}" style="position:absolute; right: 10px">
+		            <p:themeSwitcher id="basic" style="width:165px" value="#{temaBean.tema}">
+		                <f:selectItem itemLabel="Choose Theme" itemValue="" />
+	                    <f:selectItems value="#{temaBean.temas}" var="tema" itemLabel="#{tema}" itemValue="#{tema}" />
+	        			<f:ajax/>
+		            </p:themeSwitcher>
+	        	</h:form>
+        	</h:panelGrid>
 			
 			<p:growl id="messages" showDetail="true" autoUpdate="true"/>
 
@@ -32,6 +39,10 @@
 				    </p:submenu>
 				</p:menubar>
 			</h:form>
+
+			<h1>
+				<ui:insert name="titulo"/>
+			</h1>
 			
 			<h:outputText value="Usuario: #{sessionScope['usuarioLogado'].email}" />
 			<br/>
