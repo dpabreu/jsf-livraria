@@ -2,6 +2,7 @@ package br.com.caelum.livraria.modelo;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
@@ -22,9 +23,18 @@ public class LivroDataModel extends LazyDataModel<Livro> {
 	public List<Livro> load(int inicio, int quantidade, String campoOrdenacao, 
 				SortOrder sentidoOrdenacao, Map<String, Object> filtros){
 		
-		String titulo = (String) filtros.get("titulo");
+		Set<String> keySet = filtros.keySet();
+		String valorDigitado = null;
+		String campoFiltrado = null;
 		
-		return dao.listaTodosPaginada(inicio, quantidade, "titulo", titulo);
+		for (String key : keySet) {
+			if(filtros.containsKey(key)) {
+				valorDigitado = (String) filtros.get(key);
+				campoFiltrado = key;
+			}
+		}
+		
+		return dao.listaTodosPaginada(inicio, quantidade, campoFiltrado, valorDigitado);
 	}
 
 }
