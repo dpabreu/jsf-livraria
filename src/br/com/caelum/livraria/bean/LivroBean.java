@@ -1,6 +1,8 @@
 package br.com.caelum.livraria.bean;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -12,6 +14,7 @@ import javax.faces.validator.ValidatorException;
 import br.com.caelum.livraria.dao.DAO;
 import br.com.caelum.livraria.modelo.Autor;
 import br.com.caelum.livraria.modelo.Livro;
+import br.com.caelum.livraria.modelo.LivroDataModel;
 
 @ManagedBean
 @ViewScoped
@@ -19,7 +22,13 @@ public class LivroBean {
 
 	private Livro livro = new Livro();
 	private Integer autorID;
+	private List<Livro> livros;
+	private LivroDataModel livroDataModel = new LivroDataModel();
+	private List<String> generos = Arrays.asList("Romance", "Drama", "Ação");
 
+	public List<String> getGeneros() {
+	    return generos;
+	}
 	public Integer getAutorID() {
 		return autorID;
 	}
@@ -55,7 +64,13 @@ public class LivroBean {
 	}
 	
 	public List<Livro> getLivros(){
-		return new DAO<Livro>(Livro.class).listaTodos();
+		DAO<Livro> dao = new DAO<Livro>(Livro.class);
+		
+		if(this.livros == null){
+			this.livros = dao.listaTodos();
+		}
+		
+		return this.livros;
 	}
 	
 	public void gravar() {
@@ -65,10 +80,12 @@ public class LivroBean {
 			FacesContext.getCurrentInstance().addMessage("autor", new FacesMessage("Livro deve ter pelo menos um Autor."));
 		}
 
+		DAO<Livro> dao = new DAO<Livro>(Livro.class);
 		if(this.livro.getId() == null){
-			new DAO<Livro>(Livro.class).adiciona(this.livro);
+			dao.adiciona(this.livro);
+			this.livros = dao.listaTodos();
 		}else{
-			new DAO<Livro>(Livro.class).atualiza(this.livro);
+			dao.atualiza(this.livro);
 		}
 		
 		this.livro = new Livro();
@@ -95,6 +112,37 @@ public class LivroBean {
 		if(!valor.startsWith("1")){
 			throw new ValidatorException(new FacesMessage("Deveria começar com um."));
 		}
+	}
+	
+	public boolean precoEhMenor(Object valorDaColuna, Object filtro, Locale locale){
+		
+		String textoDigitado = (filtro == null) ? null : filtro.toString().trim();
+		
+		if (textoDigitado==null || textoDigitado.equals("")){
+			return true;
+		}
+		
+		if (valorDaColuna == null){
+			return false;
+		}
+		
+		try {
+			Double precoDigitado = Double.valueOf(textoDigitado);
+			Double precoColuna = (Double) valorDaColuna;
+			
+			return precoColuna.compareTo(precoDigitado) < 0;
+		} catch (NumberFormatException e) {
+			
+			return false;
+		}
+	}
+
+	public LivroDataModel getLivroDataModel() {
+		return livroDataModel;
+	}
+
+	public void setLivroDataModel(LivroDataModel livroDataModel) {
+		this.livroDataModel = livroDataModel;
 	}
 	
 }

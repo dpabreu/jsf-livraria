@@ -24,6 +24,7 @@ public class Livro {
 	private double preco;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Calendar dataLancamento = Calendar.getInstance();
+	private String genero;
 
 	@ManyToMany(fetch=FetchType.EAGER)
 	private List<Autor> autores = new ArrayList<Autor>();
@@ -82,6 +83,14 @@ public class Livro {
 	public void removeAutor(Autor autor) {
 		this.autores.remove(autor);
 		
+	}
+
+	public String getGenero() {
+		return genero;
+	}
+
+	public void setGenero(String genero) {
+		this.genero = genero;
 	}
 
 }
