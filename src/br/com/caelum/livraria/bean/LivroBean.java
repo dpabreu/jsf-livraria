@@ -63,6 +63,9 @@ public class LivroBean {
 		return this.livro.getAutores();
 	}
 	
+	public void setLivro(Livro livro) {
+		this.livro = livro;
+	}
 	public List<Livro> getLivros(){
 		DAO<Livro> dao = new DAO<Livro>(Livro.class);
 		

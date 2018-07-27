@@ -9,7 +9,10 @@
 	<h:head/>
 	<h:body>
 		<div id="cabecalho">
-			<h:panelGrid columns="2">
+			<h:form rendered="#{sessionScope['usuarioLogado'] != null}" style="position:absolute; right: 10px">
+				<h:outputText value="Usuario: #{sessionScope['usuarioLogado'].email}" />
+			</h:form>
+			<!-- <h:panelGrid columns="2">
 				<h:graphicImage library="img" name="logo.png"/>
 				
 				<h:form rendered="#{sessionScope['usuarioLogado'] != null}" style="position:absolute; right: 10px">
@@ -19,7 +22,7 @@
 	        			<f:ajax/>
 		            </p:themeSwitcher>
 	        	</h:form>
-        	</h:panelGrid>
+        	</h:panelGrid> -->
 			
 			<p:growl id="messages" showDetail="true" autoUpdate="true"/>
 
@@ -45,7 +48,6 @@
 				<ui:insert name="titulo"/>
 			</h1>
 			
-			<h:outputText value="Usuario: #{sessionScope['usuarioLogado'].email}" />
 			<br/>
 		</div>
 		
@@ -54,7 +56,6 @@
 		</div>
 		
 		<div id="rodape">
-			copyright 2018
 			<ui:insert name="texto">
 
 			</ui:insert>

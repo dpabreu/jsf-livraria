@@ -17,7 +17,7 @@
 		<p:outputPanel>Novo Livro</p:outputPanel>
 	</ui:define>
 	<ui:define name="conteudo">
-		<h:form>
+		<h:form id="form">
 			<p:messages id="messages"/>
 			<p:fieldset legend="Dados do Livro">
 				<p:panelGrid columns="2">
@@ -51,6 +51,8 @@
 				</p:panelGrid>
 			</p:fieldset>
 			
+			<br/>
+			
 			<p:fieldset legend="Dados do Autor">
 				<p:panelGrid columns="4">
 					<p:outputLabel value="Selecione Autor" for="autor"/>
@@ -80,6 +82,9 @@
 			<p:commandButton value="Gravar" action="#{livroBean.gravar}"
 				process="@form" update="@form :formTabelaLivros:tabelaLivros"/> 
 		</h:form>
+		
+		<br/>
+		
 		<h:form id="formTabelaLivros">
 			<p:dataTable id="tabelaLivros" var="livro" value="#{livroBean.livroDataModel}" paginator="true" rows="5" lazy="true">
 				<f:facet name="header">Livros</f:facet>
@@ -115,13 +120,14 @@
 				</p:column>
 				
 				<p:column>
-					<f:facet name="header">Alterar</f:facet>
-					<h:commandLink value="alterar" action="#{livroBean.carregar(livro)}"/>
-				</p:column>
-
-				<p:column>
-					<f:facet name="header">Remover</f:facet>
-					<h:commandLink value="remover" action="#{livroBean.remover(livro)}"/>
+					<f:facet name="header">Opções</f:facet>
+						
+			        <p:commandButton icon="fa fa-fw fa-edit" update=":form" style="position: center">
+			        	<f:setPropertyActionListener value="#{livro}" target="#{livroBean.livro}" />						
+					</p:commandButton>
+						
+					<p:commandButton icon="fa fa-fw fa-remove" action="#{livroBean.remover(livro)}" update="tabelaLivros" 
+						process="@this" style="position: center"/>
 				</p:column>
 			</p:dataTable>
 		</h:form>
