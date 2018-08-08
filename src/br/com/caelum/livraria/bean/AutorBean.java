@@ -8,7 +8,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import br.com.caelum.livraria.dao.AutorDao;
+import br.com.caelum.livraria.log.Log;
 import br.com.caelum.livraria.modelo.Autor;
+import br.com.caelum.livraria.tx.Transacional;
 import br.com.caelum.livraria.util.RedirectView;
 
 @Named
@@ -39,6 +41,7 @@ public class AutorBean implements Serializable{
 		return autor;
 	}
 	
+	@Log
 	public List<Autor> getAutores(){
 		return this.dao.listaTodos();
 	}
@@ -52,6 +55,7 @@ public class AutorBean implements Serializable{
 		}
 	}
 	
+	@Transacional
 	public RedirectView gravar() {
 		System.out.println("Gravando autor " + this.autor.getNome());
 
@@ -64,6 +68,7 @@ public class AutorBean implements Serializable{
 		return new RedirectView("livro");
 	}
 	
+	@Transacional
 	public void remover(Autor autor){
 		System.out.println("Removendo autor " + this.autor.getNome());
 		this.dao.remove(autor);

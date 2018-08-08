@@ -7,6 +7,7 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
+import br.com.caelum.livraria.log.Log;
 import br.com.caelum.livraria.modelo.Autor;
 
 public class AutorDao implements Serializable{
@@ -42,7 +43,8 @@ public class AutorDao implements Serializable{
 	public boolean equals(Object obj) {
 		return dao.equals(obj);
 	}
-
+	
+	@Log
 	public List<Autor> listaTodos() {
 		return dao.listaTodos();
 	}
