@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="_template.xhtml">
+
+	<f:metadata>
+		<f:viewParam name="editoraId" value="#{editoraBean.editora.id}"/>
+  		<f:viewAction action="#{editoraBean.carregaPelaId}" if="#{param.editoraId != null}"/>
+	</f:metadata>
+
+	<ui:define name="titulo">
+		<p:outputPanel>Nova Editora</p:outputPanel>
+	</ui:define>
+	<ui:define name="conteudo">
+		<h:form id="form">
+			<p:messages id="messages"/>
+			<p:fieldset legend="Dados da Editora">
+				<p:panelGrid columns="2">
+	
+					<p:outputLabel value="CNPJ:" for="cnpj" />
+					<p:inputMask id="cnpj" value="#{editoraBean.editora.cnpj}" mask="99.999.999/9999-99">
+						<f:ajax event="keyup" render="messages" />
+					</p:inputMask>
+					
+					<p:outputLabel value="Razão Social:" for="razaoSocial" />                            
+					<p:inputText id="razaoSocial" value="#{editoraBean.editora.razaoSocial}" required="true" requiredMessage="Razão social obrigatório" >
+						<f:validateLength maximum="40"/>
+						<f:ajax event="blur" render="messages"/>				
+					</p:inputText>
+						
+					<p:outputLabel value="Nome:" for="nome" />
+					<p:inputText id="nome" value="#{editoraBean.editora.nomeFantasia}" required="true" requiredMessage="Nome fantasia obrigatório" >
+						<f:validateLength maximum="40"/>
+						<f:ajax event="blur" render="messages"/>				
+					</p:inputText>
+	
+					<p:outputLabel value="Email Contato:" for="emailContato" />
+					<p:inputText id="emailContato" value="#{editoraBean.editora.emailContato}" required="true" requiredMessage="Email contato obrigatório" >
+						<f:validateLength maximum="40"/>
+						<f:ajax event="blur" render="messages"/>				
+					</p:inputText>	
+				</p:panelGrid>
+			</p:fieldset>
+			
+			<br/>
+			
+			<p:commandButton value="Gravar" action="#{editoraBean.gravar}"
+				process="@form" update="@form :formTabelaEditoras:tabelaEditoras"/> 
+		</h:form>
+		
+		<br/>
+		
+		<h:form id="formTabelaEditoras">
+			<p:dataTable id="tabelaEditoras" var="editora" value="#{editoraBean.editoras}" paginator="true" rows="4" lazy="true">
+				<f:facet name="header">Editoras</f:facet>
+				<p:column headerText="CNPJ" sortBy="#{editora.cnpj}">
+					<h:outputText value="#{editora.cnpj}"/>
+				</p:column>
+					
+				<p:column sortBy="#{editora.razaoSocial}">
+					<f:facet name="header">Razão Social</f:facet>
+					<h:outputText value="#{editora.razaoSocial}"/>
+				</p:column>
+		
+				<p:column sortBy="#{editora.nomeFantasia}" >
+					<f:facet name="header">Nome Fantasia</f:facet>
+					<h:outputText value="#{editora.nomeFantasia}"/>
+				</p:column>
+		
+				<p:column sortBy="#{editora.emailContato}">
+					<f:facet name="header">Email Contato</f:facet>
+					<h:outputText value="#{editora.emailContato}"/>
+				</p:column>
+				
+				<p:column>
+					<f:facet name="header">Opções</f:facet>
+						
+			        <p:commandButton icon="fa fa-fw fa-edit" update=":form" style="position: center" actionListener="#{editoraBean.carregar(editora)}" >
+			        							
+					</p:commandButton>
+						
+					<p:commandButton icon="fa fa-fw fa-remove" action="#{editoraBean.remover(editora)}" update="tabelaEditoras" 
+						process="@this" style="position: center"/>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+	<ui:define name="texto">
+		Cadastro de Editoras
+	</ui:define>
+</ui:composition>
+
+</html>
