@@ -14,9 +14,11 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import br.com.caelum.livraria.dao.AutorDao;
+import br.com.caelum.livraria.dao.EditoraDao;
 import br.com.caelum.livraria.dao.LivroDao;
 import br.com.caelum.livraria.log.Log;
 import br.com.caelum.livraria.modelo.Autor;
+import br.com.caelum.livraria.modelo.Editora;
 import br.com.caelum.livraria.modelo.Livro;
 import br.com.caelum.livraria.modelo.LivroDataModel;
 import br.com.caelum.livraria.tx.Transacional;
@@ -31,6 +33,7 @@ public class LivroBean implements Serializable{
 	private Integer autorID;
 	private List<Livro> livros;
 	private List<String> generos = Arrays.asList("Romance", "Drama", "Ação");
+	private Integer editoraId;
 	
 	@Inject 
 	private LivroDataModel livroDataModel;
@@ -40,10 +43,13 @@ public class LivroBean implements Serializable{
 	
 	@Inject
 	private LivroDao livroDao;
+	
+	@Inject EditoraDao editoraDao;
 		
 	public List<String> getGeneros() {
 	    return generos;
 	}
+	
 	public Integer getAutorID() {
 		return autorID;
 	}
@@ -58,6 +64,10 @@ public class LivroBean implements Serializable{
 	
 	public List<Autor> getAutores(){
 		return this.autorDao.listaTodos();
+	}
+	
+	public List<Editora> getEditoras(){
+		return this.editoraDao.listaTodos();
 	}
 	
 	public void carregaPelaId(){
@@ -98,7 +108,14 @@ public class LivroBean implements Serializable{
 		if (livro.getAutores().isEmpty()) {
 			FacesContext.getCurrentInstance().addMessage("autor", new FacesMessage("Livro deve ter pelo menos um Autor."));
 		}
-
+		
+		if (this.editoraId == null || this.editoraId == 0) {
+			FacesContext.getCurrentInstance().addMessage("editora", new FacesMessage("Livro deve ter uma Editora."));
+		} else {
+			Editora editora = this.editoraDao.buscaPorId(this.editoraId);
+			this.livro.setEditora(editora);
+		}
+		
 		if(this.livro.getId() == null){
 			this.livroDao.adiciona(this.livro);
 			this.livros = this.livroDao.listaTodos();
@@ -107,6 +124,7 @@ public class LivroBean implements Serializable{
 		}
 		
 		this.livro = new Livro();
+		this.editoraId = 0;
 	}
 	
 	@Transacional
@@ -119,6 +137,11 @@ public class LivroBean implements Serializable{
 		System.out.println("Carregando livro" + livro.getTitulo());
 		this.livro = this.livroDao.buscaPorId(livro.getId());
 		
+		if(this.livro.getEditora() != null) {
+			this.editoraId = this.livro.getEditora().getId();
+		} else {
+			this.editoraId = 0;
+		}
 	}
 	
 	public void removerAutorDoLivro(Autor autor){
@@ -162,6 +185,12 @@ public class LivroBean implements Serializable{
 
 	public void setLivroDataModel(LivroDataModel livroDataModel) {
 		this.livroDataModel = livroDataModel;
+	}
+	public Integer getEditoraId() {
+		return editoraId;
+	}
+	public void setEditoraId(Integer editoraId) {
+		this.editoraId = editoraId;
 	}
 	
 }

@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -19,14 +20,29 @@ public class Livro {
 	private Integer id;
 
 	private String titulo;
+	
 	private String isbn;
+	
 	private double preco;
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Calendar dataLancamento = Calendar.getInstance();
+	
 	private String genero;
 
 	@ManyToMany
 	private List<Autor> autores = new ArrayList<Autor>();
+	
+	@ManyToOne
+	private Editora editora = new Editora();
+	
+	public Editora getEditora() {
+		return editora;
+	}
+
+	public void setEditora(Editora editora) {
+		this.editora = editora;
+	}
 
 	public List<Autor> getAutores() {
 		return autores;

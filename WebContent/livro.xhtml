@@ -39,7 +39,8 @@
 						mask="999-9-99-999999-9">
 						<f:ajax event="keyup" render="messages" />
 					</p:inputMask>
-	
+					
+						
 					<p:outputLabel value="Preço:" for="preco" />
 					<p:inputNumber id="preco" value="#{livroBean.livro.preco}">
 						<f:validateDoubleRange minimum="1.00" maximum="1000.00"/>
@@ -48,6 +49,19 @@
 					<p:outputLabel value="Data de Lançamento:" for="dataLancamento" />
 					<p:calendar id="dataLancamento" value="#{livroBean.livro.dataLancamento.time}"
 						pattern="dd/MM/yyyy HH:mm" timeZone="America/Sao_Paulo" maks="true"/>	
+				</p:panelGrid>
+				
+				<br/>
+				
+				<p:panelGrid columns="3">
+					<p:outputLabel value="Selecione Editora: " for="editora"/>
+					<p:selectOneMenu value="#{livroBean.editoraId}" id="editora">
+						<f:selectItem itemLabel="Selecione..." itemValue="#{null}" />
+						<f:selectItems value="#{livroBean.editoras}" var="editora" 
+							itemLabel="#{editora.nomeFantasia}" itemValue="#{editora.id}"/>
+					</p:selectOneMenu>
+					
+					<p:commandLink value="Cadastrar nova editora" action="editora?faces-redirect=true" immediate="true" update="@all"/>
 				</p:panelGrid>
 			</p:fieldset>
 			

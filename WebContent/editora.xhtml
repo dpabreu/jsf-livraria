@@ -56,7 +56,7 @@
 		<br/>
 		
 		<h:form id="formTabelaEditoras">
-			<p:dataTable id="tabelaEditoras" var="editora" value="#{editoraBean.editoras}" paginator="true" rows="4" lazy="true">
+			<p:dataTable id="tabelaEditoras" var="editora" value="#{editoraBean.editoraDataMovel}" paginator="true" rows="4" lazy="true">
 				<f:facet name="header">Editoras</f:facet>
 				<p:column headerText="CNPJ" sortBy="#{editora.cnpj}">
 					<h:outputText value="#{editora.cnpj}"/>

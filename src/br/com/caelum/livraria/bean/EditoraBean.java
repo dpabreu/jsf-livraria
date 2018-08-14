@@ -9,6 +9,7 @@ import javax.inject.Named;
 
 import br.com.caelum.livraria.dao.EditoraDao;
 import br.com.caelum.livraria.modelo.Editora;
+import br.com.caelum.livraria.modelo.EditoraDataModel;
 import br.com.caelum.livraria.tx.Transacional;
 import br.com.caelum.livraria.util.RedirectView;
 
@@ -21,6 +22,9 @@ public class EditoraBean implements Serializable{
 	private Editora editora = new Editora();
 	private Integer editraId;
 	private List<Editora> editoras;
+	
+	@Inject
+	private EditoraDataModel editoraDataMovel;
 	
 	@Inject
 	private EditoraDao dao;
@@ -66,7 +70,7 @@ public class EditoraBean implements Serializable{
 			this.dao.atualiza(editora);
 		}
 		
-		return new RedirectView("editora");
+		return new RedirectView("livro");
 	}
 	
 	@Transacional
@@ -76,5 +80,13 @@ public class EditoraBean implements Serializable{
 	
 	public void carregar(Editora editora) {
 		this.editora = editora;
+	}
+
+	public EditoraDataModel getEditoraDataMovel() {
+		return editoraDataMovel;
+	}
+
+	public void setEditoraDataMovel(EditoraDataModel editoraDataMovel) {
+		this.editoraDataMovel = editoraDataMovel;
 	}
 }
