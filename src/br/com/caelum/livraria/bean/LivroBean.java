@@ -186,11 +186,18 @@ public class LivroBean implements Serializable{
 	public void setLivroDataModel(LivroDataModel livroDataModel) {
 		this.livroDataModel = livroDataModel;
 	}
+	
 	public Integer getEditoraId() {
 		return editoraId;
 	}
+	
 	public void setEditoraId(Integer editoraId) {
 		this.editoraId = editoraId;
 	}
 	
+	public void buscaLivros() {
+		
+		this.livros = livroDao.buscaLivros(this.livro.getTitulo(), this.livro.getGenero(), this.editoraId);
+		
+	}
 }
